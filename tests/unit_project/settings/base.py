@@ -22,7 +22,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-ROOT_URLCONF = 'djangobaselibrary.sample.urls'
+ROOT_URLCONF = ''
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -37,7 +37,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 INSTALLED_APPS = (
-    'djangobaselibrary.sample',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

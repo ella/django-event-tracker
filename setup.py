@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-import djangobaselibrary
+import eventtracker
 
 # all fields marked with TODO: REPLACE
 # must be filled with some meanigful values
@@ -9,7 +9,7 @@ __version__ = VERSION
 __versionstr__ = '.'.join(map(str, VERSION))
 
 setup(
-    name = 'djangobaselibrary',
+    name = 'eventtracker',
     version = __versionstr__,
     description = 'Django Base Library', # TODO: REPLACE
     long_description = '\n'.join((

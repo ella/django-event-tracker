@@ -29,15 +29,7 @@ for p in PYTHONPATH:
 # django needs this env variable
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 
-
-# TODO: ugly hack to inject django plugin to nose.run
 #
-#
-for i in ['--with-django',]:
-    if i not in sys.argv:
-        sys.argv.insert(1, i)
-
-
 nose.run_exit(
     defaultTest=dirname(__file__),
 )

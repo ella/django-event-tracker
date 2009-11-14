@@ -1,9 +1,6 @@
 from setuptools import setup, find_packages
 import eventtracker
 
-# all fields marked with TODO: REPLACE
-# must be filled with some meanigful values
-
 VERSION = (0, 0, 0)
 __version__ = VERSION
 __versionstr__ = '.'.join(map(str, VERSION))
@@ -11,18 +8,17 @@ __versionstr__ = '.'.join(map(str, VERSION))
 setup(
     name = 'eventtracker',
     version = __versionstr__,
-    description = 'Django Base Library', # TODO: REPLACE
+    description = 'Django Event Tracker',
     long_description = '\n'.join((
-        'Django Base Library',
+        'Django Event Tracker',
         '',
-        'this project (python module) is meant as a template',
-        'for any centrumholdings django based',
-        '(even non-django, pure python) libraries',
+        'Simple django application for asynchronous tracking of events',
+        'Uses celery for transport of messages and MongoDB for event store.',
     )),
-    author = 'centrum holdings s.r.o', # TODO: REPLACE
-    author_email='devel@centrumholdings.com', # TODO: REPLACE
-    license = 'BSD', # TODO: REPLACE
-    url='http://git.netcentrum.cz/projects/django/GIT/django-base-library.git/', # TODO: REPLACE
+    author = 'Honza Kral',
+    author_email='honza.kral@gmail.com',
+    license = 'BSD',
+    url='ssh://githany/projects/django/GIT/django-event-tracker.git',
 
     packages = find_packages(
         where = '.',
@@ -31,7 +27,6 @@ setup(
 
     include_package_data = True,
 
-    # TODO: REPLACE
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -44,6 +39,11 @@ setup(
     ],
     install_requires = [
         'setuptools>=0.6b1',
+        'django-unittest-depth',
+        'anyjson',
+        'carrot>=0.6.0',
+        'celery>=0.8.0',
+        'pymongo',
     ],
     setup_requires = [
         'setuptools_dummy',

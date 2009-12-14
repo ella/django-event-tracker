@@ -2,7 +2,7 @@ import anyjson
 
 from django.http import HttpResponse, HttpResponseBadRequest
 
-from eventtracker.backend import track
+from eventtracker import backend
 
 def track_event(request, event):
     params = request.GET.get('params')
@@ -14,6 +14,6 @@ def track_event(request, event):
     else:
         params = {}
 
-    track(event, params)
+    backend.track(event, params)
     return HttpResponse('OK')
 

@@ -8,7 +8,7 @@ def test_track_event_returns_400_on_bad_json():
     response = c.get('/event/', {'params': '{'})
     tools.assert_equals(400, response.status_code)
 
-@patch('eventtracker.tasks.track')
+@patch('eventtracker.backend.track')
 def test_track_event_calls_track_with_params_from_GET(track):
     c = Client()
     response = c.get('/event/', {'params': '{"some": "params"}'})
@@ -16,7 +16,7 @@ def test_track_event_calls_track_with_params_from_GET(track):
     tools.assert_true(track.called)
     tools.assert_equals(((u'event', {'some': 'params'}), {}), track.call_args)
     
-@patch('eventtracker.tasks.track')
+@patch('eventtracker.backend.track')
 def test_track_event_calls_track_with_empty_params_if_no_GET(track):
     c = Client()
     response = c.get('/event/')

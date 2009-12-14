@@ -8,6 +8,6 @@ Standards-Version: 3.7.2
 
 Package: centrum-python-eventtracker
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, python-django, python-docutils
+Depends: ${python:Depends}, ${misc:Depends}, python-django, python-celery, python-mongodb, python-anyjson
 Description: django base library
 

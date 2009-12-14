@@ -10,4 +10,6 @@ EXCHANGE = 'events'
 QUEUE = 'events'
 TASK_PERIOD = 10
 
+TRACKER_BACKEND = 'celery'
+
 settings = Settings(__name__, 'EVENTS_')

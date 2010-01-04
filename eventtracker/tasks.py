@@ -30,7 +30,13 @@ def _close_carrot_object(carobj):
             pass
 
 def _get_mongo_collection():
-    connection = Connection(host=settings.MONGODB_HOST, port=settings.MONGODB_PORT)
+    if settings.RIGHT_MONGODB_HOST:
+        connection = Connection.paired(
+                left=(settings.MONGODB_HOST, settings.MONGODB_PORT),
+                right=(settings.RIGHT_MONGODB_HOST, settings.RIGHT_MONGODB_PORT)
+            )
+    else:
+        connection = Connection(host=settings.MONGODB_HOST, port=settings.MONGODB_PORT)
     return connection[settings.MONGODB_DB][settings.MONGODB_COLLECTION]
     
 

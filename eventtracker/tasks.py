@@ -9,6 +9,14 @@ from pymongo.connection import Connection
 from eventtracker.conf import settings
 from eventtracker import models 
 
+publisher = None
+
+def _connect():
+    global publisher
+    if publisher is None:
+        publisher = _get_carrot_object(Publisher)
+
+
 def _get_carrot_object(klass, **kwargs):
     return klass(
             connection=DjangoBrokerConnection(),
@@ -45,9 +53,12 @@ def track(event, params):
     """
     Dispatch a track event request into the queue
     """
-    publisher = _get_carrot_object(Publisher)
-    publisher.send((event, params))
-    _close_carrot_object(publisher)
+    _connect()
+    try:
+        publisher.send((event, params))
+    except:
+        global publisher
+        publisher = None
 
 
 def collect_events():

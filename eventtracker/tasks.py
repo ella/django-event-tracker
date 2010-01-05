@@ -59,6 +59,7 @@ def track(event, params):
     except:
         global publisher
         publisher = None
+        raise
 
 
 def collect_events():

@@ -12,7 +12,7 @@ MONGODB_COLLECTION = 'events'
 ROUTING_KEY = 'events'
 EXCHANGE = 'events'
 QUEUE = 'events'
-TASK_PERIOD = 10
+TASK_PERIOD = 3*60
 
 TRACKER_BACKEND = 'celery'
 

@@ -82,7 +82,7 @@ def collect_events():
                 pass
 
 class ProcessEventsTask(PeriodicTask):
-    run_every = timedelta(minutes=settings.TASK_PERIOD)
+    run_every = timedelta(seconds=settings.TASK_PERIOD)
 
     def run(self, **kwargs):
         collect_events()

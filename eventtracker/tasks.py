@@ -1,4 +1,5 @@
 from datetime import timedelta
+from time import time
 
 from celery.task import PeriodicTask
 from celery.registry import tasks
@@ -53,11 +54,12 @@ def track(event, params):
     """
     Dispatch a track event request into the queue
     """
+    global publisher
     _connect()
     try:
-        publisher.send((event, params))
+        publisher.send((event, time(), params))
     except:
-        global publisher
+        _close_carrot_object(publisher)
         publisher = None
         raise
 
@@ -70,8 +72,8 @@ def collect_events():
         collection = _get_mongo_collection()
 
         for message in consumer.iterqueue():
-            e, p = message.decode()
-            models.save_event(collection, e, p)
+            e, t, p = message.decode()
+            models.save_event(collection, e, t, p)
             message.ack()
 
     finally:

@@ -2,10 +2,10 @@ from datetime import datetime
 
 from django.db import models
 
-def save_event(collection, event, params):
+def save_event(collection, event, timestamp, params):
     collection.insert({
         'event': event,
-        'timestamp': datetime.now(),
+        'timestamp': datetime.fromtimestamp(timestamp),
         'params': params
     }) 
 

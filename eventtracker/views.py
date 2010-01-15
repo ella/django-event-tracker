@@ -5,6 +5,11 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from eventtracker import backend
 
 def track_event(request, event):
+    """
+    Simple view that receives and stores an event in the backend (celery queue
+    or dummy).
+    
+    """
     params = request.GET.get('params')
     if params:
         try:

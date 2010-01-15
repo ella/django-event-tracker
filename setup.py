@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import eventtracker
 
-VERSION = (0, 0, 0)
+VERSION = (0, 0, 1)
 __version__ = VERSION
 __versionstr__ = '.'.join(map(str, VERSION))
 
@@ -18,7 +18,7 @@ setup(
     author = 'Honza Kral',
     author_email='honza.kral@gmail.com',
     license = 'BSD',
-    url='ssh://githany/projects/django/GIT/django-event-tracker.git',
+    url='http://github.com/ella/django-event-tracker',
 
     packages = find_packages(
         where = '.',
@@ -39,7 +39,6 @@ setup(
     ],
     install_requires = [
         'setuptools>=0.6b1',
-        'django-unittest-depth',
         'anyjson',
         'carrot>=0.6.0',
         'celery>=0.8.0',

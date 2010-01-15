@@ -5,18 +5,11 @@ from celery.task import PeriodicTask
 from celery.registry import tasks
 from carrot.connection import DjangoBrokerConnection
 from carrot.messaging import Publisher, Consumer
-from pymongo.connection import Connection
 
 from eventtracker.conf import settings
 from eventtracker import models 
 
 publisher = None
-
-def _connect():
-    global publisher
-    if publisher is None:
-        publisher = _get_carrot_object(Publisher)
-
 
 def _get_carrot_object(klass, **kwargs):
     return klass(
@@ -38,38 +31,37 @@ def _close_carrot_object(carobj):
         except:
             pass
 
-def _get_mongo_collection():
-    if settings.RIGHT_MONGODB_HOST:
-        connection = Connection.paired(
-                left=(settings.MONGODB_HOST, settings.MONGODB_PORT),
-                right=(settings.RIGHT_MONGODB_HOST, settings.RIGHT_MONGODB_PORT)
-            )
-    else:
-        connection = Connection(host=settings.MONGODB_HOST, port=settings.MONGODB_PORT)
-    return connection[settings.MONGODB_DB][settings.MONGODB_COLLECTION]
-    
-
 
 def track(event, params):
     """
     Dispatch a track event request into the queue
     """
     global publisher
-    _connect()
+    if publisher is None:
+        # no connection or there was an error last time
+        # reinitiate the Publisher
+        publisher = _get_carrot_object(Publisher)
+
     try:
         publisher.send((event, time(), params))
     except:
+        # something went wrong, probably a connection error or something. Close
+        # the carrot connection and set it to None so that the next request
+        # will try and reopen it.
         _close_carrot_object(publisher)
         publisher = None
         raise
 
 
 def collect_events():
+    """
+    Collect all events waiting in the queue and store them in the database.
+    """
     consumer = None
     collection = None
     try:
         consumer = _get_carrot_object(Consumer, queue=settings.QUEUE)
-        collection = _get_mongo_collection()
+        collection = models.get_mongo_collection()
 
         for message in consumer.iterqueue():
             e, t, p = message.decode()
@@ -85,6 +77,9 @@ def collect_events():
                 pass
 
 class ProcessEventsTask(PeriodicTask):
+    """
+    Celery periodic task that collects events from queue.
+    """
     run_every = timedelta(seconds=settings.TASK_PERIOD)
 
     def run(self, **kwargs):

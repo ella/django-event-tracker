@@ -4,7 +4,7 @@ specifying EVENTS_<CONF_OPTION> in your projects' setting.py.
 """
 
 from django.utils.importlib import import_module
-from django.conf import settings
+from django.conf import settings as django_settings
 
 class Settings(object):
     "Simple wrapper around config."
@@ -14,12 +14,12 @@ class Settings(object):
 
     def __getattr__(self, name):
         p_name = ''.join((self.prefix, name))
-        if hasattr(settings, p_name):
-            return getattr(settings, p_name)
+        if hasattr(django_settings, p_name):
+            return getattr(django_settings, p_name)
         return getattr(self.module, name)
 
     def __dir__(self):
-        return dir(self.module) + dir(self.settings)
+        return dir(self.module)
 
 
 MONGODB_HOST = 'localhost'

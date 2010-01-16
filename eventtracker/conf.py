@@ -22,20 +22,27 @@ class Settings(object):
         return dir(self.module)
 
 
+# primary mongo connection
 MONGODB_HOST = 'localhost'
 MONGODB_PORT = 27017
 
+# other mongo host if using replica pair
 RIGHT_MONGODB_HOST = None
 RIGHT_MONGODB_PORT = 27017
 
+# name of the db and collection in mongo
 MONGODB_DB = 'events'
 MONGODB_COLLECTION = 'events'
 
+# messaging configuration
 ROUTING_KEY = 'events'
 EXCHANGE = 'events'
 QUEUE = 'events'
+
+# collect the events from the queue every three minutes by default
 TASK_PERIOD = 3*60
 
+# default backend
 TRACKER_BACKEND = 'celery'
 
 settings = Settings(__name__, 'EVENTS_')

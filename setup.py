@@ -22,7 +22,7 @@ setup(
 
     packages = find_packages(
         where = '.',
-        exclude = ('docs', 'tests')
+        exclude = ('tests',)
     ),
 
     include_package_data = True,

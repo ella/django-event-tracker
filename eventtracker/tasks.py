@@ -12,6 +12,7 @@ from eventtracker import models
 publisher = None
 
 def _get_carrot_object(klass, **kwargs):
+    "Helper function to create Publisher and Consumer objects."
     return klass(
             connection=DjangoBrokerConnection(),
             exchange=settings.EXCHANGE,
@@ -21,6 +22,7 @@ def _get_carrot_object(klass, **kwargs):
         )
     
 def _close_carrot_object(carobj):
+    "Close Consumer or Publisher safely."
     if carobj:
         try:
             carobj.close()
@@ -34,7 +36,13 @@ def _close_carrot_object(carobj):
 
 def track(event, params):
     """
-    Dispatch a track event request into the queue
+    Dispatch a track event request into the queue.
+
+    If the Publisher object hasn't been intialized yet, do so. If any error
+    occurs during sending of the message, close the Publisher so it will be
+    open automatically the next time somedy tracks an event. This will prevent
+    a short-term network failure to disable one thread from commucating with
+    the queue at the cost of retrying the connection every time.
     """
     global publisher
     if publisher is None:
@@ -43,6 +51,7 @@ def track(event, params):
         publisher = _get_carrot_object(Publisher)
 
     try:
+        # put the message into the queue including current time
         publisher.send((event, time(), params))
     except:
         # something went wrong, probably a connection error or something. Close
@@ -77,9 +86,7 @@ def collect_events():
                 pass
 
 class ProcessEventsTask(PeriodicTask):
-    """
-    Celery periodic task that collects events from queue.
-    """
+    "Celery periodic task that collects events from queue."
     run_every = timedelta(seconds=settings.TASK_PERIOD)
 
     def run(self, **kwargs):

@@ -13,7 +13,7 @@ class Settings(object):
         self.prefix = prefix
 
     def __getattr__(self, name):
-        p_name = ''.join((self.prefix, name))
+        p_name = '_'.join((self.prefix, name))
         if hasattr(django_settings, p_name):
             return getattr(django_settings, p_name)
         return getattr(self.module, name)
@@ -45,4 +45,4 @@ TASK_PERIOD = 3*60
 # default backend
 TRACKER_BACKEND = 'celery'
 
-settings = Settings(__name__, 'EVENTS_')
+settings = Settings(__name__, 'EVENTS')

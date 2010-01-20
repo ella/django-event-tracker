@@ -8,13 +8,14 @@ simple HTTP GET request.
 Installation
 ============
 
- * install django event tracker into your system or ``virtualenv``.
- * configure celery to work with your project
+ * install django event tracker into your system or ``virtualenv``
+ * `configure celery`_ to work with your project
  * add ``eventtracker`` to your ``INSTALLED_APPS`` and ``eventtracker.urls``
    somewhere in your URLs
  * customize your settings, see ``eventtracker.conf`` for complete list of
    options and their default values
 
+.. _`configure celery`: http://celeryproject.org/introduction.html#configuring-your-django-project-to-use-celery
 
 Use
 ===
